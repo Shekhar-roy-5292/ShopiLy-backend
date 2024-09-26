@@ -36,6 +36,13 @@ const login = async (req, res, next) => {
     user.password = undefined;
     const token = await generateToken(user.id);
     // console.log(token);
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 60 * 60 * 1000), // 1 hour
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      // domain: "shopily.com", // Replace with your domain name
+    });
     res.json({ message: "Logged in successfully" });
     next();
   } catch (error) {
@@ -44,4 +51,22 @@ const login = async (req, res, next) => {
   // Generate JWT token
 };
 
-export { register, login };
+const logout = (req, res) => {
+  res.clearCookie("token");
+  res.json({ message: "Logged out successfully" });
+};
+
+const deleteUser = async(req, res) => {
+  try {
+    const {id} = req.params;
+    const user = await User.findByIdAndDelete(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json({ message: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error: " + error.message });
+  }
+}
+
+export { register, login, logout, deleteUser };

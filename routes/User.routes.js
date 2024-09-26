@@ -1,9 +1,17 @@
 import express from "express";
-import { login, register } from "../controllers/user.controller.js";
+import {
+  deleteUser,
+  login,
+  logout,
+  register,
+} from "../controllers/user.controller.js";
+import verifyToken from "../middleware/verifyToken.js";
 const userRoute = express.Router();
 
-userRoute.get('/register', register);
-userRoute.get('/login', login);
+userRoute.post("/register", register);
+userRoute.post("/login", login);
+userRoute.get("/logout", logout);
 
+userRoute.delete("/users/:id", deleteUser);
 
 export default userRoute;
