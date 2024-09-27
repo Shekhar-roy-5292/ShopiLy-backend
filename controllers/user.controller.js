@@ -32,7 +32,7 @@ const login = async (req, res, next) => {
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
-    
+
     user.password = undefined;
     const token = await generateToken(user.id);
     // console.log(token);
@@ -56,9 +56,9 @@ const logout = (req, res) => {
   res.json({ message: "Logged out successfully" });
 };
 
-const deleteUser = async(req, res) => {
+const deleteUser = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
     const user = await User.findByIdAndDelete(id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -67,6 +67,62 @@ const deleteUser = async(req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error: " + error.message });
   }
-}
+};
 
-export { register, login, logout, deleteUser };
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({}, "id email role").sort({ createAt: -1 });
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Error: " + error.message });
+  }
+};
+
+const updateUser = async (req, res) => {
+  try {
+    const { userId, username, profileImage, bio, profession } = req.body;
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    //update profile
+    if (username !== undefined) user.username = username;
+    if (profileImage !== undefined) user.profileImage = profileImage;
+    if (bio !== undefined) user.bio = bio;
+    if (profession !== undefined) user.profession = profession;
+    await user.save();
+    res.status(200).send({
+      message: "User updated successfully",
+      updatedUser: user,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error: " + error.message });
+  }
+};
+
+const updateUserRole = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { role } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(id, { role });
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ message: "Error: " + error.message });
+  }
+};
+
+export {
+  register,
+  login,
+  logout,
+  deleteUser,
+  getAllUsers,
+  updateUser,
+  updateUserRole,
+};
