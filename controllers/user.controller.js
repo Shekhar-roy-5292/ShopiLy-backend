@@ -2,6 +2,7 @@ import bcryptjs from "bcryptjs";
 import User from "../models/User.model.js";
 import generateToken from "../middleware/generateToken.js";
 
+//Register endpoint
 const register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
@@ -21,6 +22,7 @@ const register = async (req, res, next) => {
   // Generate JWT token
 };
 
+//Login endpoint
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -40,10 +42,10 @@ const login = async (req, res, next) => {
       expires: new Date(Date.now() + 60 * 60 * 1000), // 1 hour
       httpOnly: true,
       secure: true,
-      sameSite: "None",
+      samesite: true,
       // domain: "shopily.com", // Replace with your domain name
     });
-    res.json({ message: "Logged in successfully" });
+    res.json({ message: "Logged in successfully", token: token, user: user });
     next();
   } catch (error) {
     res.status(500).json({ message: "Error: " + error.message });
@@ -51,11 +53,13 @@ const login = async (req, res, next) => {
   // Generate JWT token
 };
 
+// Logout endpoint
 const logout = (req, res) => {
   res.clearCookie("token");
   res.json({ message: "Logged out successfully" });
 };
 
+// Delete a user
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -69,6 +73,7 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// Get all user
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({}, "id email role").sort({ createAt: -1 });
@@ -78,6 +83,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+// Edit or update user
 const updateUser = async (req, res) => {
   try {
     const { userId, username, profileImage, bio, profession } = req.body;
@@ -103,6 +109,7 @@ const updateUser = async (req, res) => {
   }
 };
 
+// Update user role
 const updateUserRole = async (req, res) => {
   try {
     const { id } = req.params;
