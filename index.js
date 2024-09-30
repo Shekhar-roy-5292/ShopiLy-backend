@@ -14,6 +14,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import userRoute from "./routes/user.routes.js";
 import productRouter from "./routes/product.routes.js";
+import ReviewRouter from "./routes/reviews.routes.js";
 const app = express();
 
 // Middlewares
@@ -35,6 +36,7 @@ app.use(
 // Routes
 app.use("/api/auth", userRoute);
 app.use("/api/products", productRouter);
+app.use("/api/review", ReviewRouter);
 
 const PORT = process.env.PORT || 3000;
 app.get("/", (req, res) => {

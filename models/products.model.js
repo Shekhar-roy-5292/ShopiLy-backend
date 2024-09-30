@@ -6,12 +6,12 @@ const ProductSchema = new Schema({
   category: { type: String, required: true },
   description: { type: String, required: true },
   price: { type: Number, required: true },
-  oldPrice: { type: Number, required: true },
+  oldPrice: { type: Number},
   image: { type: String, required: true },
   color: { type: String, required: true },
   quantity: { type: Number }, // Included quantity as required
   rating: { type: Number, default: 0 }, // Default value is 0, so not required explicitly
-  author: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  author: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
 const Product = mongoose.model("Product", ProductSchema);
