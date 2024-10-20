@@ -35,7 +35,7 @@ app.use(
 );
 
 // Routes
-app.use("/api/auth", userRoute);
+// app.use("/api/auth", userRoute);
 app.use("/api/products", productRouter);
 app.use("/api/reviews", ReviewRouter);
 
