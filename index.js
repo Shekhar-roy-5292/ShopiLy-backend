@@ -40,9 +40,9 @@ app.use("/api/products", productRouter);
 app.use("/api/reviews", ReviewRouter);
 
 const PORT = process.env.PORT || 3000;
-// app.get("/", (req, res) => {
-//   res.send("Hello, world");
-// });
+app.get("/", (req, res) => {
+  res.send("Hello, world");
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
