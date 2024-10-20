@@ -36,7 +36,7 @@ app.use(
 // Routes
 app.use("/api/auth", userRoute);
 app.use("/api/products", productRouter);
-app.use("/api/review", ReviewRouter);
+app.use("/api/reviews", ReviewRouter);
 
 const PORT = process.env.PORT || 3000;
 app.get("/", (req, res) => {

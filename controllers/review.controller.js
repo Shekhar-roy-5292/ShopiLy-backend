@@ -117,3 +117,20 @@ export const getReviewsByUserId = async (req, res) => {
       .json({ message: "Failed to get reviews", error: err.message });
   }
 };
+
+export const deleteReview = async (req, res) => {
+  const reviewId = req.params.id;
+  if (!reviewId) {
+    return res.status(400).json({ message: "Review ID is required." });
+  }
+  try {
+    const review = await Review.findByIdAndDelete(reviewId);
+    if (!review) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+  } catch {
+    return res
+      .status(500)
+      .json({ message: "Failed to delete review", error: err.message });
+  }
+};
