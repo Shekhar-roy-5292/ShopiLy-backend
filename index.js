@@ -12,9 +12,10 @@ connectToMongoDB();
 // Define the Express app
 import express from "express";
 import bodyParser from "body-parser";
-import userRoute from "./routes/user.routes";
+// import userRoute from "./routes/user.routes.js";
 import productRouter from "./routes/product.routes.js";
 import ReviewRouter from "./routes/reviews.routes.js";
+
 const app = express();
 
 // Middlewares
