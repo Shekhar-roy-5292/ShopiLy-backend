@@ -1,5 +1,5 @@
 import bcryptjs from "bcryptjs";
-import User from "../models/User.model.js";
+import User from "../models/user.model.js";
 import generateToken from "../middleware/generateToken.js";
 
 //Register endpoint
